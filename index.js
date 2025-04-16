@@ -1,5 +1,4 @@
-import {format} = require('date-fns');
-
+import { format } from 'date-fns';
 
 export const handler = async (event) => {
   const response = {
