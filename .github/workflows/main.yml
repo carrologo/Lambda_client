@@ -32,4 +32,4 @@ jobs:
       
       - name: Deploy to AWS Lambda
         run: |
-          aws lambda update-function-code --function-name=Createclients --zip-file fileb://deploy.zip
+          aws lambda update-function-code --function-name=createclients --zip-file fileb://deploy.zip
