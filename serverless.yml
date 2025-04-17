@@ -6,8 +6,6 @@ provider:
   runtime: nodejs18.x
   region: us-east-1
   environment:
-    AWS_ACCESS_KEY_ID: ${ env:AWS_ACCESS_KEY_ID }
-    AWS_SECRET_ACCESS_KEY: ${ env:AWS_SECRET_ACCESS_KEY }
     SUPABASE_URL: ${env:SUPABASE_URL}
     SUPABASE_KEY: ${env:SUPABASE_KEY}
 
@@ -16,7 +14,7 @@ plugins:
   - serverless-offline
 
 functions:
-  createClient:
+  prueba:
     handler: src/infrastructure/lambdas/handler.handler
     events:
       - http:
