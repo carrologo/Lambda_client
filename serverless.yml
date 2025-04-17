@@ -14,7 +14,7 @@ plugins:
 
 functions:
   createClient:
-    handler: src/infrastructure/lambdas/handler.handler
+    arn: ${env:EXISTING_LAMBDA_ARN}
     events:
       - http:
           path: /clients
