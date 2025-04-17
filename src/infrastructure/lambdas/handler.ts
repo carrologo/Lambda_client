@@ -11,6 +11,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     const { name, email } = body;
 
     if (!name || !email) {
+        
       return {
         statusCode: 400,
         body: JSON.stringify({ message: "Name and email are required" }),
