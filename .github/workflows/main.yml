@@ -29,6 +29,7 @@ jobs:
         run: |
           echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> $GITHUB_ENV
           echo "SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}" >> $GITHUB_ENV
+          echo "SERVERLESS_ACCESS_KEY=${{ secrets.SERVERLESS_ACCESS_KEY }}" >> $GITHUB_ENV
 
       - name: Install dependencies
         run: npm ci
@@ -38,6 +39,7 @@ jobs:
 
       - name: Package Lambda function
         run: zip -r function.zip . -x "node_modules/aws-sdk/**"
+
       - name: Update Lambda function code
         run: |
           aws lambda update-function-code \
