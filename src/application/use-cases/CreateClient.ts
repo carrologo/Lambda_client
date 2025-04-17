@@ -9,6 +9,7 @@ export class CreateClient {
       const client = new Client( name, email);
       return await this.clientRepository.save(client);
     } catch (error) {
+        
       throw new Error(`Failed to create client: ${error instanceof Error ? error.message : "Unknown error"}`);
     }
   }
