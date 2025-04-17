@@ -1,0 +1,22 @@
+service: my-serverless-api
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: us-east-1
+  environment:
+    SUPABASE_URL: ${env:SUPABASE_URL}
+    SUPABASE_KEY: ${env:SUPABASE_KEY}
+
+plugins:
+  - serverless-offline
+
+functions:
+  createClient:
+    handler: dist/infrastructure/lambdas/handler.handler
+    events:
+      - http:
+          path: /clients
+          method: post
+          cors: true

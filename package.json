@@ -4,12 +4,24 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "dev": "serverless offline"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "date-fns": "^4.1.0"
+    "@supabase/supabase-js": "^2.49.4",
+    "@types/node": "^22.14.1",
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.5.0",
+    "typescript": "^5.8.3"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.149",
+    "esbuild": "^0.25.2",
+    "serverless-esbuild": "^1.55.0",
+    "serverless-offline": "^14.4.0"
   }
 }
