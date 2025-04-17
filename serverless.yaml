@@ -14,9 +14,19 @@ plugins:
 
 functions:
   createClient:
-    handler: dist/infrastructure/lambdas/handler.handler
+    handler: src/infrastructure/lambdas/handler.handler
     events:
       - http:
           path: /clients
           method: post
           cors: true
+
+custom:
+  esbuild:
+    bundle: true
+    minify: true
+    sourcemap: true
+    target: "node18"
+    platform: "node"
+    exclude: ['aws-sdk']
+    packager: "npm"

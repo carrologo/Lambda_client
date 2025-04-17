@@ -7,6 +7,7 @@ export class CreateClient {
   async execute(name: string, email: string): Promise<Client> {
     try {
       const client = new Client( name, email);
+      
       return await this.clientRepository.save(client);
     } catch (error) {
       throw new Error(`Failed to create client: ${error instanceof Error ? error.message : "Unknown error"}`);
