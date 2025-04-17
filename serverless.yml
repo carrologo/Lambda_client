@@ -32,3 +32,10 @@ custom:
       target: node18
       format: cjs
       tsconfig: tsconfig.json
+
+resources:
+  Resources:
+    CreateClientLambdaFunction:
+      Type: AWS::Lambda::Function
+      Properties:
+        FunctionName: prueba # Apunta a la función existente
