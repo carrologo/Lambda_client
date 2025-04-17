@@ -32,22 +32,19 @@ jobs:
           echo "SERVERLESS_ACCESS_KEY=${{ secrets.SERVERLESS_ACCESS_KEY }}" >> $GITHUB_ENV
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --only=production
 
       - name: Build project
         run: npm run build
 
       - name: Package Lambda function
-        run: zip -r function.zip . -x "node_modules/aws-sdk/**"
+        run: zip -r function.zip . -x "node_modules/aws-sdk/**" "*.git/**" "*.github/**" "tests/**" "*.env" "*.log"
+
+      - name: Verify ZIP size
+        run: du -h function.zip
 
       - name: Update Lambda function code
         run: |
           aws lambda update-function-code \
             --function-name prueba \
             --zip-file fileb://function.zip
-
-      - name: Update Lambda environment variables
-        run: |
-          aws lambda update-function-configuration \
-            --function-name prueba \
-            --environment "Variables={SUPABASE_URL=${{ secrets.SUPABASE_URL }},SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}"
