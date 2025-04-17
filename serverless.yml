@@ -14,7 +14,6 @@ plugins:
 
 functions:
   createClient:
-    name: prueba
     handler: src/infrastructure/lambdas/handler.handler
     events:
       - http:
