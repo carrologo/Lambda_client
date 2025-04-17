@@ -30,3 +30,9 @@ custom:
     platform: "node"
     exclude: ['aws-sdk']
     packager: "npm"
+
+package:
+  include:
+    - node_modules/**
+  exclude:
+    - node_modules/aws-sdk/**
