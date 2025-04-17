@@ -6,8 +6,6 @@ provider:
   runtime: nodejs18.x
   region: us-east-1
   environment:
-    AWS_ACCESS: ${ env:AWS_ACCESS }
-    AWS_SECRET: ${ env:AWS_SECRET }
     SUPABASE_URL: ${env:SUPABASE_URL}
     SUPABASE_KEY: ${env:SUPABASE_KEY}
 
