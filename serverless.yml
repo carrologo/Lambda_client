@@ -14,12 +14,14 @@ plugins:
 
 functions:
   createClient:
+    name: prueba # Nombre exacto de la función existente
     handler: src/infrastructure/lambdas/handler.handler
     events:
       - http:
           path: /clients
           method: post
           cors: true
+    existingArn: arn:aws:lambda:us-east-1:YOUR_ACCOUNT_ID:function:prueba # Reemplaza con el ARN de tu función existente
 
 custom:
   build:
@@ -31,10 +33,3 @@ custom:
       target: node18
       format: cjs
       tsconfig: tsconfig.json
-
-resources:
-  Resources:
-    CreateClientLambdaFunction:
-      Type: AWS::Lambda::Function
-      Properties:
-        FunctionName: prueba # Apunta a la función existente
