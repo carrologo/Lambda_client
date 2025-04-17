@@ -4,8 +4,8 @@
       "module": "CommonJS",
       "strict": true,
       "esModuleInterop": true,
-      "outDir": "",
-      "rootDir": "src"
+      "outDir": "src",
+      "rootDir": "./"
     },
-    "include": ["src/**/*"]
+    "include": ["./**/*", "infrastructure", "application", "domain", "index.ts"]
   }
