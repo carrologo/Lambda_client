@@ -8,37 +8,33 @@ on:
 jobs:
   deploy_lambda:
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
 
-      - uses: actions/setup-node@v2
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: '18'
-      
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-2
-      
+
       - name: Set environment variables
         run: |
           echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> $GITHUB_ENV
           echo "SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}" >> $GITHUB_ENV
-      
+
       - name: Install dependencies
-        run: |
-          npm ci
-      
-      - name: Compile TypeScript
-        run: |
-          npm run build
-      
-      - name: Create deployment package
-        run: |
-          zip -r deploy.zip dist -x '*.git*'
-      
-      - name: Deploy to AWS Lambda
-        run: |
-          aws lambda update-function-code --function-name=createclients --zip-file fileb://deploy.zip
+        run: npm ci
+
+      - name: Deploy with Serverless
+        run: npx serverless deploy --stage prod
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
