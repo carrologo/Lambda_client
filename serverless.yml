@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-service: serveless-api-client
-=======
-service: prueba
->>>>>>> 621e9182e7989f0637b725c49c7bfd25489550f0
+service: my-serverless-api
 frameworkVersion: '4'
 
 provider:
@@ -13,17 +9,11 @@ provider:
     SUPABASE_URL: ${env:SUPABASE_URL}
     SUPABASE_KEY: ${env:SUPABASE_KEY}
 
-
 plugins:
   - serverless-offline
 
 functions:
-<<<<<<< HEAD
-  clients:
-=======
-  prueba:
-    name: prueba 
->>>>>>> 621e9182e7989f0637b725c49c7bfd25489550f0
+  createClient:
     handler: src/infrastructure/lambdas/handler.handler
     events:
       - http:
@@ -31,13 +21,11 @@ functions:
           method: post
           cors: true
 
-custom:
-  build:
-    esbuild:
-      bundle: true
-      minify: false
-      sourcemap: true
-      platform: node
-      target: node18
-      format: cjs
-      tsconfig: tsconfig.json
+resources:
+  Resources:
+    CreateClientLambdaPermission:
+      Type: AWS::Lambda::Permission
+      Properties:
+        FunctionName: arn:aws:lambda:us-east-1:451291043467:function:prueba # ARN de la función existente
+        Action: lambda:InvokeFunction
+        Principal: apigateway.amazonaws.com
