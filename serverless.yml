@@ -22,7 +22,9 @@ functions:
           path: /clients
           method: post
           cors: true
+    existing: true
 
+    
 custom:
   build:
     esbuild:
