@@ -1,4 +1,4 @@
-service: my-serverless-api
+service: prueba
 frameworkVersion: '4'
 
 provider:
