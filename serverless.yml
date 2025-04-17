@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 service: serveless-api-client
+=======
+service: prueba
+>>>>>>> 621e9182e7989f0637b725c49c7bfd25489550f0
 frameworkVersion: '4'
 
 provider:
@@ -14,7 +18,12 @@ plugins:
   - serverless-offline
 
 functions:
+<<<<<<< HEAD
   clients:
+=======
+  prueba:
+    name: prueba 
+>>>>>>> 621e9182e7989f0637b725c49c7bfd25489550f0
     handler: src/infrastructure/lambdas/handler.handler
     events:
       - http:
