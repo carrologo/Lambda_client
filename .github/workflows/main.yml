@@ -1,7 +1,7 @@
 name: deploy
 
 on:
-  pull_request:
+  push:
     branches:
       - main
       - develop
@@ -31,10 +31,22 @@ jobs:
           echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> $GITHUB_ENV
           echo "SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}" >> $GITHUB_ENV
 
+      - name: Determine stage
+        id: determine-stage
+        run: |
+          if [ "${{ github.ref_name }}" == "main" ]; then
+            echo "stage=prod" >> $GITHUB_ENV
+          elif [ "${{ github.ref_name }}" == "develop" ]; then
+            echo "stage=develop" >> $GITHUB_ENV
+          else
+            echo "stage=dev" >> $GITHUB_ENV
+          fi
+
       - name: Install dependencies
-        run: npm ci
-         echo ls -la
-         echo pwd
+        run: |
+          npm ci
+          echo ls -la
+          echo pwd
 
       - name: Deploy with Serverless
         run: npx serverless deploy --stage ${{ env.stage }}
