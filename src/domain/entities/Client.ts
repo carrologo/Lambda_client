@@ -5,5 +5,6 @@ export class Client {
     public identification: string,
     public birthdate: Date,
     public contact: number
+    
   ) {}
 }
