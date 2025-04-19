@@ -4,7 +4,7 @@ frameworkVersion: '4'
 provider:
   name: aws
   runtime: nodejs18.x
-  region: us-east-2
+  region: us-east-1
   environment:
     SUPABASE_URL: ${env:SUPABASE_URL}
     SUPABASE_KEY: ${env:SUPABASE_KEY}
@@ -14,18 +14,10 @@ plugins:
 
 functions:
   createClient:
+    name: createClient
     handler: src/infrastructure/lambdas/handler.handler
     events:
       - http:
           path: /clients
           method: post
           cors: true
-
-resources:
-  Resources:
-    CreateClientLambdaPermission:
-      Type: AWS::Lambda::Permission
-      Properties:
-        FunctionName: arn:aws:lambda:us-east-2:451291043467:function:prueba # ARN de la función existente
-        Action: lambda:InvokeFunction
-        Principal: apigateway.amazonaws.com
