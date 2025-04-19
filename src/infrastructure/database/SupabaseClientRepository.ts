@@ -11,7 +11,7 @@ export class SupabaseClientRepository implements ClientRepository {
   async save(client: Client): Promise<Client> {
     const { data, error } = await this.supabase
       .from("client")
-      .insert({ name: client.name, email: client.email })
+      .insert({ name: client.name, email: client.email, identification: client.identification, birth_date: client.birthdate, contact: client.contact })
       .select()
       .single();
 
@@ -20,8 +20,23 @@ export class SupabaseClientRepository implements ClientRepository {
       throw new Error(error.message);
     }
 
-
-
-    return new Client( data.name, data.email);
+    return new Client( data.name, data.email, data.identification, data.birthdate, data.contact );
+  }
+  async findByIdentification(identification: string): Promise<Client | null> {
+    const { data, error } = await this.supabase
+      .from("client")
+      .select("*")
+      .eq("identification", identification)
+      .single();
+  
+    if (error) {
+      if (error.code === "PGRST116") {
+        return null;
+      }
+      console.error("Error fetching client:", error);
+      throw new Error(error.message);
+    }
+  
+    return data ? new Client(data.name, data.email, data.identification, data.birthdate, data.contact) : null;
   }
 }
