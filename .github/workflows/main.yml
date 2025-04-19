@@ -1,7 +1,7 @@
 name: deploy
 
 on:
-  pull_request:
+  push:
     branches:
       - main
       - develop
@@ -17,7 +17,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "18"
+          node-version: '18'
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -34,15 +34,17 @@ jobs:
       - name: Determine stage
         id: determine-stage
         run: |
-          if [ "${{ github.base_ref }}" == "main" ]; then
+          if [ "${{ github.ref_name }}" == "main" ]; then
             echo "stage=prod" >> $GITHUB_ENV
-          elif [ "${{ github.base_ref }}" == "develop" ]; then
+          elif [ "${{ github.ref_name }}" == "develop" ]; then
             echo "stage=develop" >> $GITHUB_ENV
           else
             echo "stage=dev" >> $GITHUB_ENV
+          fi
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          npm ci
           echo ls -la
           echo pwd
 
