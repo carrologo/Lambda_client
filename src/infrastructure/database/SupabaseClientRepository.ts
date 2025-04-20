@@ -51,12 +51,12 @@ export class SupabaseClientRepository implements ClientRepository {
     return data.map(
       (clientData: any) =>
         new Client(
-          clientData.id, // Asegúrate de incluir el campo 'id'
           clientData.name,
           clientData.email,
           clientData.identification,
-          clientData.birthdate,
-          clientData.contact
+          clientData.birth_date,
+          clientData.contact,
+          clientData.id,
         )
     );
   }
