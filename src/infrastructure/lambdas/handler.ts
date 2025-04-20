@@ -47,10 +47,24 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     }
 
     if (event.httpMethod === "GET" && event.path === "/clients") {
-      const clients = await getAllClients.execute();
+      const queryParams = {
+        name: event.queryStringParameters?.name,
+        page: event.queryStringParameters?.page
+          ? parseInt(event.queryStringParameters.page, 10)
+          : 1,
+        limit: event.queryStringParameters?.limit
+          ? parseInt(event.queryStringParameters.limit, 10)
+          : 50,
+      };
+
+      const { data, pagination } = await getAllClients.execute(queryParams);
+
       return {
         statusCode: 200,
-        body: JSON.stringify(clients),
+        body: JSON.stringify({
+          data,
+          pagination,
+        }),
       };
     }
 
