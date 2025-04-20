@@ -5,7 +5,14 @@ export interface ClientRepository {
 
   findByIdentification(identification: string): Promise<Client | null>;
 
-  findAll(): Promise<Client[]>;
+  
+  findAll(queryParams: { name?: string; page?: number; limit?: number }): Promise<{
+    clients: Client[];
+    pagination: {
+      page: number;
+      total: number;
+    };
+  }>;
 
   updatePartial(id: string, updates: Partial<Client>): Promise<Client>;
 

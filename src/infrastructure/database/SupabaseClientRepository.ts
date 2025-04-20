@@ -39,28 +39,51 @@ export class SupabaseClientRepository implements ClientRepository {
   
     return data ? new Client(data.name, data.email, data.identification, data.birthdate, data.contact) : null;
   }
+  async findAll(queryParams: { name?: string; page?: number; limit?: number }): Promise<{
+    clients: Client[];
+    pagination: {
+      page: number;
+      total: number;
+    };
+  }> {
+    const { name, page = 1, limit = 50 } = queryParams;
+  
+    let query = this.supabase.from("client").select("*", { count: "exact" });
 
-  async findAll(): Promise<Client[]> {
-    const { data, error } = await this.supabase.from("client").select("*");
+    if (name) {
+      query = query.ilike("name", `%${name}%`); 
+    }
+  
+    const offset = (page - 1) * limit;
+    query = query.range(offset, offset + limit - 1);
+  
+    const { data, error, count } = await query;
   
     if (error) {
       console.error("Error fetching clients:", error);
       throw new Error("Failed to fetch clients");
     }
   
-    return data.map(
+    const clients = data.map(
       (clientData: any) =>
         new Client(
+          clientData.id,
           clientData.name,
           clientData.email,
           clientData.identification,
           clientData.birth_date,
-          clientData.contact,
-          clientData.id,
+          clientData.contact
         )
     );
+  
+    return {
+      clients,
+      pagination: {
+        page,
+        total: count || 0, // Total de registros devueltos por Supabase
+      },
+    };
   }
-
   
   async updatePartial(id: string, updates: Partial<Client>): Promise<Client> {
     const transformedUpdates: any = { ...updates };
