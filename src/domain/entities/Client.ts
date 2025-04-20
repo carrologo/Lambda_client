@@ -4,7 +4,7 @@ export class Client {
     public email: string,
     public identification: string,
     public birthdate: Date,
-    public contact: number
-    
+    public contact: number,
+    public id?: string
   ) {}
 }
