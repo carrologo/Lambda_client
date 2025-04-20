@@ -67,12 +67,12 @@ export class SupabaseClientRepository implements ClientRepository {
     const clients = data.map(
       (clientData: any) =>
         new Client(
-          clientData.id,
           clientData.name,
           clientData.email,
           clientData.identification,
           clientData.birth_date,
-          clientData.contact
+          clientData.contact,
+          clientData.id,
         )
     );
   
@@ -80,7 +80,7 @@ export class SupabaseClientRepository implements ClientRepository {
       clients,
       pagination: {
         page,
-        total: count || 0, // Total de registros devueltos por Supabase
+        total: count || 0,
       },
     };
   }
