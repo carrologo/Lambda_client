@@ -11,7 +11,7 @@ export class SupabaseClientRepository implements ClientRepository {
   async save(client: Client): Promise<Client> {
     const { data, error } = await this.supabase
       .from("client")
-      .insert({ name: client.name, email: client.email, identification: client.identification, birth_date: client.birthdate, contact: client.contact })
+      .insert({ name: client.name, email: client.email, identification: client.identification, birth_date: client.birthdate, contact: client.contact, comment: client.comment })
       .select()
       .single();
 
@@ -39,23 +39,35 @@ export class SupabaseClientRepository implements ClientRepository {
   
     return data ? new Client(data.name, data.email, data.identification, data.birthdate, data.contact, data.comment) : null;
   }
-  async findAll(queryParams: { name?: string; page?: number; limit?: number }): Promise<{
+  async findAll(queryParams: { findBy?: string; value?: any; orderBy?: string; isAsc: boolean; page?: number; limit?: number }): Promise<{
     clients: Client[];
     pagination: {
       page: number;
       total: number;
     };
   }> {
-    const { name, page = 1, limit = 50 } = queryParams;
+    const { findBy, value, orderBy, isAsc, page = 1, limit = 50 } = queryParams;
   
     let query = this.supabase.from("client").select("*", { count: "exact" });
 
-    if (name) {
-      query = query.ilike("name", `%${name}%`); 
+    if (findBy && value) {
+      query = query.ilike(findBy, `%${value}%`);
     }
+
+    if (orderBy) {
+      if (orderBy ===  "birthdate"){
+        query = query.order(
+          `ABS(EXTRACT(DOY FROM birth_date) - EXTRACT(DOY FROM CURRENT_DATE))`,
+          { ascending: isAsc }
+        );
+        
+      }
+      else query = query.order(orderBy, { ascending: queryParams.isAsc });
+    } 
   
     const offset = (page - 1) * limit;
     query = query.range(offset, offset + limit - 1);
+
   
     const { data, error, count } = await query;
   

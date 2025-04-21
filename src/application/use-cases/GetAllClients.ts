@@ -4,7 +4,7 @@ import { Client } from "../../domain/entities/Client";
 export class GetAllClients {
   constructor(private clientRepository: ClientRepository) {}
 
-  async execute(queryParams: { name?: string; page?: number; limit?: number }): Promise<{
+  async execute(queryParams: { findBy?: string; value?: any; orderBy?: string; isAsc: boolean; page?: number; limit?: number }): Promise<{
     data: Client[];
     pagination: {
       page: number;

@@ -6,7 +6,7 @@ export interface ClientRepository {
   findByIdentification(identification: string): Promise<Client | null>;
 
   
-  findAll(queryParams: { name?: string; page?: number; limit?: number }): Promise<{
+  findAll(queryParams: { findBy?: string; value?: any; orderBy?: string; isAsc: boolean; page?: number; limit?: number }): Promise<{
     clients: Client[];
     pagination: {
       page: number;
