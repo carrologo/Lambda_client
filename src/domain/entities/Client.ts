@@ -5,6 +5,8 @@ export class Client {
     public identification: string,
     public birthdate: Date,
     public contact: number,
-    public id?: string
+    public comment: string,
+    public isActive: boolean = true,
+    public id?: string,
   ) {}
 }
