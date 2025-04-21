@@ -12,6 +12,7 @@ export class GetAllClients {
     };
   }> {
     const { clients, pagination } = await this.clientRepository.findAll(queryParams);
+    
     return {
       data: clients,
       pagination,
