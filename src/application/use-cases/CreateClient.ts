@@ -5,9 +5,9 @@ import { ClientAlreadyExistsError } from "../../domain/entities/ClientAlreadyExi
 export class CreateClient {
   constructor(private clientRepository: ClientRepository) {}
 
-  async execute(name: string, email: string, identification: string, birthdate: Date, contact:  number): Promise<Client> {
+  async execute(name: string, email: string, identification: string, birthdate: Date, contact:  number, comment: string): Promise<Client> {
     try {
-      const client = new Client( name, email, identification, birthdate, contact);
+      const client = new Client( name, email, identification, birthdate, contact, comment);
 
       const existingClient = await this.clientRepository.findByIdentification(identification);
 
