@@ -14,10 +14,18 @@ plugins:
 
 functions:
   createClient:
-    name: createClient
+    name: createClient-${opt:stage, 'dev'}
     handler: src/infrastructure/lambdas/handler.handler
     events:
       - http:
           path: /clients
           method: post
+          cors: true
+      - http:
+          path: /clients
+          method: get
+          cors: true
+      - http:
+          path: /clients/{id}
+          method: patch
           cors: true
