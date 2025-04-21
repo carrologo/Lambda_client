@@ -4,6 +4,7 @@ import { CreateClient } from "../../application/use-cases/CreateClient";
 import { GetAllClients } from "../../application/use-cases/GetAllClients";
 import { ClientAlreadyExistsError } from "../../domain/entities/ClientAlreadyExitsError";
 import { UpdateClient } from "../../application/use-cases/UpdateClient";
+import { is } from "date-fns/locale";
 
 const clientRepository = new SupabaseClientRepository();
 const createClient = new CreateClient(clientRepository);
@@ -50,7 +51,12 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
     if (event.httpMethod === "GET" && event.path === "/clients") {
       const queryParams = {
-        name: event.queryStringParameters?.name,
+        findBy: event.queryStringParameters?.findBy,
+        value: event.queryStringParameters?.value,
+        orderBy: event.queryStringParameters?.orderBy,
+        isAsc: event.queryStringParameters?.isAsc === "false"
+          ? false
+          : true,
         page: event.queryStringParameters?.page
           ? parseInt(event.queryStringParameters.page, 10)
           : 1,
