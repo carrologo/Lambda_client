@@ -11,16 +11,30 @@ export class SupabaseClientRepository implements ClientRepository {
   async save(client: Client): Promise<Client> {
     const { data, error } = await this.supabase
       .from("client")
-      .insert({ name: client.name, email: client.email, identification: client.identification, birth_date: client.birthdate, contact: client.contact, comment: client.comment })
+      .insert({
+        name: client.name,
+        email: client.email,
+        identification: client.identification,
+        birth_date: client.birthdate,
+        contact: client.contact,
+        comment: client.comment,
+      })
       .select()
       .single();
 
     if (error) {
-     console.error("Error inserting client:", error);
+      console.error("Error inserting client:", error);
       throw new Error(error.message);
     }
 
-    return new Client( data.name, data.email, data.identification, data.birthdate, data.contact, data.comment );
+    return new Client(
+      data.name,
+      data.email,
+      data.identification,
+      data.birthdate,
+      data.contact,
+      data.comment
+    );
   }
   async findByIdentification(identification: string): Promise<Client | null> {
     const { data, error } = await this.supabase
@@ -28,7 +42,7 @@ export class SupabaseClientRepository implements ClientRepository {
       .select("*")
       .eq("identification", identification)
       .single();
-  
+
     if (error) {
       if (error.code === "PGRST116") {
         return null;
@@ -36,10 +50,27 @@ export class SupabaseClientRepository implements ClientRepository {
       console.error("Error fetching client:", error);
       throw new Error(error.message);
     }
-  
-    return data ? new Client(data.name, data.email, data.identification, data.birthdate, data.contact, data.comment) : null;
+
+    return data
+      ? new Client(
+          data.name,
+          data.email,
+          data.identification,
+          data.birthdate,
+          data.contact,
+          data.comment
+        )
+      : null;
   }
-  async findAll(queryParams: { findBy?: string; value?: any; orderBy?: string; isAsc: boolean; page?: number; limit?: number }): Promise<{
+
+  async findAll(queryParams: {
+    findBy?: string;
+    value?: any;
+    orderBy?: string;
+    isAsc: boolean;
+    page?: number;
+    limit?: number;
+  }): Promise<{
     clients: Client[];
     pagination: {
       page: number;
@@ -47,7 +78,7 @@ export class SupabaseClientRepository implements ClientRepository {
     };
   }> {
     const { findBy, value, orderBy, isAsc, page = 1, limit = 50 } = queryParams;
-  
+
     let query = this.supabase.from("client").select("*", { count: "exact" });
 
     if (findBy && value) {
@@ -55,27 +86,34 @@ export class SupabaseClientRepository implements ClientRepository {
     }
 
     if (orderBy) {
-      if (orderBy ===  "birthdate"){
+      if (orderBy === "birthdate") {
         query = query.order(
-          `ABS(EXTRACT(DOY FROM birth_date) - EXTRACT(DOY FROM CURRENT_DATE))`,
+          `(CASE 
+          WHEN EXTRACT(MONTH FROM birth_date) > EXTRACT(MONTH FROM CURRENT_DATE) OR 
+               (EXTRACT(MONTH FROM birth_date) = EXTRACT(MONTH FROM CURRENT_DATE) AND 
+                EXTRACT(DAY FROM birth_date) >= EXTRACT(DAY FROM CURRENT_DATE)) 
+          THEN 0 
+          ELSE 365 
+        END) + 
+        EXTRACT(DOY FROM (DATE_TRUNC('year', CURRENT_DATE) + 
+               ((EXTRACT(MONTH FROM birth_date)::int - 1) * INTERVAL '1 month' + 
+                 EXTRACT(DAY FROM birth_date)::int - 1 || ' days')::interval)) - 
+        EXTRACT(DOY FROM CURRENT_DATE)`,
           { ascending: isAsc }
         );
-        
-      }
-      else query = query.order(orderBy, { ascending: queryParams.isAsc });
-    } 
-  
+      } else query = query.order(orderBy, { ascending: queryParams.isAsc });
+    }
+
     const offset = (page - 1) * limit;
     query = query.range(offset, offset + limit - 1);
 
-  
     const { data, error, count } = await query;
-  
+
     if (error) {
       console.error("Error fetching clients:", error);
       throw new Error("Failed to fetch clients");
     }
-  
+
     const clients = data.map(
       (clientData: any) =>
         new Client(
@@ -85,10 +123,10 @@ export class SupabaseClientRepository implements ClientRepository {
           clientData.birth_date,
           clientData.contact,
           clientData.comment,
-          clientData.id,
+          clientData.id
         )
     );
-  
+
     return {
       clients,
       pagination: {
@@ -97,25 +135,25 @@ export class SupabaseClientRepository implements ClientRepository {
       },
     };
   }
-  
+
   async updatePartial(id: string, updates: Partial<Client>): Promise<Client> {
     const transformedUpdates: any = { ...updates };
     if (updates.birthdate) {
       transformedUpdates.birth_date = updates.birthdate;
       delete transformedUpdates.birthdate;
     }
-  
+
     const { data, error } = await this.supabase
       .from("client")
       .update(transformedUpdates)
       .eq("id", id)
       .single();
-  
+
     if (error) {
       console.error("Error updating client:", error);
       throw new Error("Failed to update client");
     }
-  
+
     return updates as Client;
   }
 
@@ -134,7 +172,15 @@ export class SupabaseClientRepository implements ClientRepository {
       throw new Error(error.message);
     }
 
-    return data ? new Client(data.name, data.email, data.identification, data.birthdate, data.contact, data.comment) : null;
+    return data
+      ? new Client(
+          data.name,
+          data.email,
+          data.identification,
+          data.birthdate,
+          data.contact,
+          data.comment
+        )
+      : null;
   }
-
 }
