@@ -20,7 +20,7 @@ export class SupabaseClientRepository implements ClientRepository {
       throw new Error(error.message);
     }
 
-    return new Client( data.name, data.email, data.identification, data.birthdate, data.contact );
+    return new Client( data.name, data.email, data.identification, data.birthdate, data.contact, data.comment );
   }
   async findByIdentification(identification: string): Promise<Client | null> {
     const { data, error } = await this.supabase
@@ -37,7 +37,7 @@ export class SupabaseClientRepository implements ClientRepository {
       throw new Error(error.message);
     }
   
-    return data ? new Client(data.name, data.email, data.identification, data.birthdate, data.contact) : null;
+    return data ? new Client(data.name, data.email, data.identification, data.birthdate, data.contact, data.comment) : null;
   }
   async findAll(queryParams: { name?: string; page?: number; limit?: number }): Promise<{
     clients: Client[];
@@ -72,6 +72,7 @@ export class SupabaseClientRepository implements ClientRepository {
           clientData.identification,
           clientData.birth_date,
           clientData.contact,
+          clientData.comment,
           clientData.id,
         )
     );
@@ -121,7 +122,7 @@ export class SupabaseClientRepository implements ClientRepository {
       throw new Error(error.message);
     }
 
-    return data ? new Client(data.name, data.email, data.identification, data.birthdate, data.contact) : null;
+    return data ? new Client(data.name, data.email, data.identification, data.birthdate, data.contact, data.comment) : null;
   }
 
 }
