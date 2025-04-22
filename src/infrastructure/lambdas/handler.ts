@@ -5,6 +5,7 @@ import { GetAllClients } from "../../application/use-cases/GetAllClients";
 import { ClientAlreadyExistsError } from "../../domain/entities/ClientAlreadyExitsError";
 import { UpdateClient } from "../../application/use-cases/UpdateClient";
 import { GetClientById } from "../../application/use-cases/GetClient";
+import { ClientNotFoundError } from "../../domain/entities/ClientNotFoundError";
 
 
 const clientRepository = new SupabaseClientRepository();
@@ -131,6 +132,12 @@ export const handler: APIGatewayProxyHandler = async (event) => {
     if (error instanceof ClientAlreadyExistsError) {
       return {
         statusCode: 409,
+        body: JSON.stringify({ message: error.message }),
+      };
+    }
+    if (error instanceof ClientNotFoundError) {
+      return {
+        statusCode: 404,
         body: JSON.stringify({ message: error.message }),
       };
     }

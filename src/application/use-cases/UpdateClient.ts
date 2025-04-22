@@ -1,5 +1,6 @@
 import { ClientRepository } from "../../domain/repositories/ClientRepository";
 import { Client } from "../../domain/entities/Client";
+import { ClientNotFoundError } from "../../domain/entities/ClientNotFoundError";
 
 export class UpdateClient {
   constructor(private clientRepository: ClientRepository) {}
@@ -8,7 +9,7 @@ export class UpdateClient {
     const existingClient = await this.clientRepository.findById(id);
 
     if (!existingClient) {
-      throw new Error(`Client with ID ${id} not found`);
+      throw new ClientNotFoundError(id);
     }
 
     return this.clientRepository.updatePartial(id, updates);
