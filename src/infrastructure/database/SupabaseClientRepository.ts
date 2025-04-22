@@ -112,6 +112,7 @@ export class SupabaseClientRepository implements ClientRepository {
           clientData.birth_date,
           clientData.contact,
           clientData.comment,
+          clientData.isActive,
           clientData.id
         )
     );
