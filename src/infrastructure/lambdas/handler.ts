@@ -16,7 +16,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
   try {
     if (event.httpMethod === "POST" && event.path === "/clients") {
       const body = JSON.parse(event.body || "{}");
-      const { name, email, identification, birthdate, contact } = body;
+      const { name, email, identification, birthdate, contact, comment } = body;
 
       const missingFields: string[] = [];
       if (!name) missingFields.push("name");
@@ -24,6 +24,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       if (!identification) missingFields.push("identification");
       if (!birthdate) missingFields.push("birthdate");
       if (!contact) missingFields.push("contact");
+      if (!comment) missingFields.push("comment");
 
       if (missingFields.length > 0) {
         return {
@@ -39,7 +40,8 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         email,
         identification,
         birthdate,
-        contact
+        contact,
+        comment,
       );
 
       return {
@@ -50,7 +52,12 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
     if (event.httpMethod === "GET" && event.path === "/clients") {
       const queryParams = {
-        name: event.queryStringParameters?.name,
+        findBy: event.queryStringParameters?.findBy,
+        value: event.queryStringParameters?.value,
+        orderBy: event.queryStringParameters?.orderBy,
+        isAsc: event.queryStringParameters?.isAsc === "false"
+          ? false
+          : true,
         page: event.queryStringParameters?.page
           ? parseInt(event.queryStringParameters.page, 10)
           : 1,
