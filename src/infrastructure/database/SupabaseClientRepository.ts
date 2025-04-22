@@ -121,7 +121,7 @@ export class SupabaseClientRepository implements ClientRepository {
       throw new Error(error.message);
     }
 
-    return data ? new Client(data.name, data.email, data.identification, data.birthdate, data.contact) : null;
+    return data ? new Client(data.name, data.email, data.identification, data.birthdate, data.contac,data.id) : null;
   }
 
 }
