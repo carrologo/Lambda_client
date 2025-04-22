@@ -13,6 +13,7 @@ export class SupabaseClientRepository implements ClientRepository {
       .from("client")
       .insert({
         name: client.name,
+        last_name: client.lastName,
         email: client.email,
         identification: client.identification,
         birth_date: client.birthdate,
@@ -29,6 +30,7 @@ export class SupabaseClientRepository implements ClientRepository {
 
     return new Client(
       data.name,
+      data.lastName,
       data.email,
       data.identification,
       data.birthdate,
@@ -54,6 +56,7 @@ export class SupabaseClientRepository implements ClientRepository {
     return data
       ? new Client(
           data.name,
+          data.lastName,
           data.email,
           data.identification,
           data.birthdate,
@@ -104,6 +107,7 @@ export class SupabaseClientRepository implements ClientRepository {
         new Client(
           clientData.name,
           clientData.email,
+          clientData.last_name,
           clientData.identification,
           clientData.birth_date,
           clientData.contact,
@@ -164,6 +168,7 @@ export class SupabaseClientRepository implements ClientRepository {
     return data
       ? new Client(
           data.name,
+          data.lastName,
           data.email,
           data.identification,
           data.birthdate,

@@ -1,6 +1,7 @@
 export class Client {
   constructor(
     public name: string,
+    public lastName: string,
     public email: string,
     public identification: string,
     public birthdate: Date,
