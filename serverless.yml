@@ -20,16 +20,16 @@ functions:
       - http:
           path: /clients
           method: post
-          cors: true
+          cors: false
       - http:
           path: /clients
           method: get
-          cors: true
+          cors: false
       - http:
           path: /clients/{id}
           method: patch
-          cors: true
+          cors: false
       - http:
           path: /client/{id}
           method: get
-          cors: true
+          cors: false
