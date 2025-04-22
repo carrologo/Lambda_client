@@ -6,6 +6,7 @@ import { ClientAlreadyExistsError } from "../../domain/entities/ClientAlreadyExi
 import { UpdateClient } from "../../application/use-cases/UpdateClient";
 import { GetClientById } from "../../application/use-cases/GetClient";
 
+
 const clientRepository = new SupabaseClientRepository();
 const createClient = new CreateClient(clientRepository);
 const getAllClients = new GetAllClients(clientRepository);
@@ -16,10 +17,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
   try {
     if (event.httpMethod === "POST" && event.path === "/clients") {
       const body = JSON.parse(event.body || "{}");
-      const { name, email, identification, birthdate, contact, comment } = body;
+      const { name, lastName, email, identification, birthdate, contact, comment } = body;
 
       const missingFields: string[] = [];
       if (!name) missingFields.push("name");
+      if (!lastName) missingFields.push("lastName");
       if (!email) missingFields.push("email");
       if (!identification) missingFields.push("identification");
       if (!birthdate) missingFields.push("birthdate");
@@ -37,6 +39,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
       const client = await createClient.execute(
         name,
+        lastName,
         email,
         identification,
         birthdate,
