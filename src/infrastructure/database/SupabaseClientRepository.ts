@@ -163,6 +163,7 @@ export class SupabaseClientRepository implements ClientRepository {
 
     return data
       ? new Client(
+          data.id,
           data.name,
           data.email,
           data.identification,
