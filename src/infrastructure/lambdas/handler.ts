@@ -4,12 +4,14 @@ import { CreateClient } from "../../application/use-cases/CreateClient";
 import { GetAllClients } from "../../application/use-cases/GetAllClients";
 import { ClientAlreadyExistsError } from "../../domain/entities/ClientAlreadyExitsError";
 import { UpdateClient } from "../../application/use-cases/UpdateClient";
+import { GetClientById } from "../../application/use-cases/GetClient";
 
 
 const clientRepository = new SupabaseClientRepository();
 const createClient = new CreateClient(clientRepository);
 const getAllClients = new GetAllClients(clientRepository);
 const updateClient = new UpdateClient(clientRepository);
+const getClientById = new GetClientById(clientRepository);
 
 export const handler: APIGatewayProxyHandler = async (event) => {
   try {
@@ -95,6 +97,31 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         body: JSON.stringify(updatedClient),
       };
     }
+    if (event.httpMethod === "GET" && event.path.startsWith("/client/")) {
+      const id = event.pathParameters?.id;
+      if (!id) {
+        return {
+          statusCode: 400,
+          body: JSON.stringify({ message: "Client ID is required" }),
+        };
+      }
+      try {
+        const client = await getClientById.execute(id);
+        return {
+          statusCode: 200,
+          body: JSON.stringify(client),
+        };
+      } catch (error) {
+        if (error.message === "Client not found") {
+          return {
+            statusCode: 404,
+            body: JSON.stringify({ message: "Client not found" }),
+          };
+        }
+        throw error; 
+      }
+    }
+
 
     return {
       statusCode: 404,
