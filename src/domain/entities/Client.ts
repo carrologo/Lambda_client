@@ -5,7 +5,7 @@ export class Client {
     public email: string,
     public identification: string,
     public birthdate: Date,
-    public contact: number,
+    public contact: string,
     public comment: string,
     public isActive: boolean = true,
     public id?: string,
