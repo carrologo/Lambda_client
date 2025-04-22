@@ -30,7 +30,7 @@ export class SupabaseClientRepository implements ClientRepository {
 
     return new Client(
       data.name,
-      data.lastName,
+      data.last_name,
       data.email,
       data.identification,
       data.birthdate,
@@ -56,7 +56,7 @@ export class SupabaseClientRepository implements ClientRepository {
     return data
       ? new Client(
           data.name,
-          data.lastName,
+          data.last_name,
           data.email,
           data.identification,
           data.birthdate,
@@ -106,8 +106,8 @@ export class SupabaseClientRepository implements ClientRepository {
       (clientData: any) =>
         new Client(
           clientData.name,
-          clientData.email,
           clientData.last_name,
+          clientData.email,
           clientData.identification,
           clientData.birth_date,
           clientData.contact,
@@ -168,7 +168,7 @@ export class SupabaseClientRepository implements ClientRepository {
     return data
       ? new Client(
           data.name,
-          data.lastName,
+          data.last_name,
           data.email,
           data.identification,
           data.birthdate,
