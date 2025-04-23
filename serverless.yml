@@ -12,6 +12,17 @@ provider:
 plugins:
   - serverless-offline
 
+httpApi:
+  cors:
+    allowedOrigins:
+      - "*"
+    allowedHeaders:
+      - Content-Type
+    allowedMethods:
+      - GET
+      - POST
+      - OPTIONS
+
 functions:
   createClient:
     name: createClient-${opt:stage, 'dev'}
@@ -20,16 +31,12 @@ functions:
       - http:
           path: /clients
           method: post
-          cors: false
       - http:
           path: /clients
           method: get
-          cors: false
       - http:
           path: /clients/{id}
           method: patch
-          cors: false
       - http:
           path: /client/{id}
           method: get
-          cors: false
