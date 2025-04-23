@@ -21,13 +21,39 @@ functions:
       - http:
           path: /clients
           method: post
-          cors: true
+          integration: lambda
+          request:
+            cors:
+              origins:
+                - "*"
+              headers:
+                - Content-Type
+                - Authorization
+              methods:
+                - POST
       - http:
           path: /clients
           method: get
-          cors: true
+          integration: lambda
+          request:
+            cors:
+              origins:
+                - "*"
+              headers:
+                - Content-Type
+                - Authorization
+              methods:
+                - GET
       - http:
           path: /clients/{id}
           method: patch
-          cors: true
-      
+          integration: lambda
+          request:
+            cors:
+              origins:
+                - "*"
+              headers:
+                - Content-Type
+                - Authorization
+              methods:
+                - PATCH
