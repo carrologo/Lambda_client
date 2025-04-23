@@ -12,21 +12,24 @@ provider:
 plugins:
   - serverless-offline
 
-
 functions:
-  createClient:
-    name: createClient-${opt:stage, 'dev'}
+  LambdaClient:
+    name: LambdaClient-${opt:stage, 'dev'}
     handler: src/infrastructure/lambdas/handler.handler
     events:
       - http:
           path: /clients
           method: post
-          cors: true
+          cors: false
       - http:
           path: /clients
           method: get
-          cors: true
+          cors: false
       - http:
           path: /clients/{id}
           method: patch
-          cors: true
+          cors: false
+      - http:
+          path: /client/{id}
+          method: get
+          cors: false
