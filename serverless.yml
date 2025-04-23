@@ -20,16 +20,36 @@ functions:
       - http:
           path: /clients
           method: post
-          cors: true
+          cors:
+            origin: 'https://tusitio.com'
+            headers:
+              - Content-Type
+              - Authorization
+            allowCredentials: true
       - http:
           path: /clients
           method: get
-          cors: true
+          cors:
+            origin: 'https://tusitio.com'
+            headers:
+              - Content-Type
+              - Authorization
+            allowCredentials: true
       - http:
           path: /clients/{id}
           method: patch
-          cors: true
+          cors:
+            origin: 'https://tusitio.com'
+            headers:
+              - Content-Type
+              - Authorization
+            allowCredentials: true
       - http:
           path: /client/{id}
           method: get
-          cors: true
+          cors:
+            origin: 'https://tusitio.com'
+            headers:
+              - Content-Type
+              - Authorization
+            allowCredentials: true
