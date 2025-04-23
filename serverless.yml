@@ -21,7 +21,7 @@ functions:
           path: /clients
           method: post
           cors:
-            origin: 'https://tusitio.com'
+            origin: 'http://localhost:5173'
             headers:
               - Content-Type
               - Authorization
@@ -30,7 +30,7 @@ functions:
           path: /clients
           method: get
           cors:
-            origin: 'https://tusitio.com'
+            origin: 'http://localhost:5173'
             headers:
               - Content-Type
               - Authorization
@@ -39,7 +39,7 @@ functions:
           path: /clients/{id}
           method: patch
           cors:
-            origin: 'https://tusitio.com'
+            origin: 'http://localhost:5173'
             headers:
               - Content-Type
               - Authorization
@@ -48,7 +48,7 @@ functions:
           path: /client/{id}
           method: get
           cors:
-            origin: 'https://tusitio.com'
+            origin: 'http://localhost:5173'
             headers:
               - Content-Type
               - Authorization
