@@ -18,11 +18,11 @@ httpApi:
       - "*"
     allowedHeaders:
       - Content-Type
+      - Authorization
     allowedMethods:
       - GET
       - POST
-      - OPTIONS
-
+      - PATCH
 functions:
   createClient:
     name: createClient-${opt:stage, 'dev'}
