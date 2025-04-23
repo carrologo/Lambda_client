@@ -14,8 +14,8 @@ plugins:
 
 
 functions:
-  createClient:
-    name: createClient-${opt:stage, 'dev'}
+  lambda_client:
+    name: lambda_client-${opt:stage, 'dev'}
     handler: src/infrastructure/lambdas/handler.handler
     events:
       - http:
