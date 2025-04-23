@@ -31,12 +31,16 @@ functions:
       - http:
           path: /clients
           method: post
+          cors: true
       - http:
           path: /clients
           method: get
+          cors: true
       - http:
           path: /clients/{id}
           method: patch
+          cors: true
       - http:
           path: /client/{id}
           method: get
+          cors: true
