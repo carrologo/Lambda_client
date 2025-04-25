@@ -7,13 +7,50 @@ import { UpdateClient } from "../../application/use-cases/UpdateClient";
 import { GetClientById } from "../../application/use-cases/GetClient";
 import { ClientNotFoundError } from "../../domain/entities/ClientNotFoundError";
 
-
 const clientRepository = new SupabaseClientRepository();
 const createClient = new CreateClient(clientRepository);
 const getAllClients = new GetAllClients(clientRepository);
 const updateClient = new UpdateClient(clientRepository);
 const getClientById = new GetClientById(clientRepository);
 
+/**
+ * @swagger
+ * /clients:
+ *   post:
+ *     summary: Create a new client
+ *     tags: [Clients]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Client'
+ *     responses:
+ *       201:
+ *         description: Client created successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Client'
+ *       400:
+ *         description: Missing required fields
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       409:
+ *         description: Client with this identification already exists
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
 export const handler: APIGatewayProxyHandler = async (event) => {
   try {
     if (event.httpMethod === "POST" && event.path === "/clients") {
@@ -54,6 +91,69 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       };
     }
 
+    /**
+     * @swagger
+     * /clients:
+     *   get:
+     *     summary: Get all clients with optional filtering and pagination
+     *     tags: [Clients]
+     *     parameters:
+     *       - in: query
+     *         name: findBy
+     *         schema:
+     *           type: string
+     *         description: Field to search by
+     *       - in: query
+     *         name: value
+     *         schema:
+     *           type: string
+     *         description: Value to search for
+     *       - in: query
+     *         name: orderBy
+     *         schema:
+     *           type: string
+     *         description: Field to order by
+     *       - in: query
+     *         name: isAsc
+     *         schema:
+     *           type: boolean
+     *         description: Sort in ascending order
+     *       - in: query
+     *         name: page
+     *         schema:
+     *           type: integer
+     *         description: Page number
+     *       - in: query
+     *         name: limit
+     *         schema:
+     *           type: integer
+     *         description: Number of items per page
+     *     responses:
+     *       200:
+     *         description: List of clients
+     *         content:
+     *           application/json:
+     *             schema:
+     *               type: object
+     *               properties:
+     *                 data:
+     *                   type: array
+     *                   items:
+     *                     $ref: '#/components/schemas/Client'
+     *                 pagination:
+     *                   type: object
+     *                   properties:
+     *                     page:
+     *                       type: integer
+     *                     total:
+     *                       type: integer
+     *       500:
+     *         description: Server error
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/Error'
+     */
     if (event.httpMethod === "GET" && event.path === "/clients") {
       const queryParams = {
         findBy: event.queryStringParameters?.findBy,
@@ -81,6 +181,45 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       };
     }
 
+    /**
+     * @swagger
+     * /clients/{id}:
+     *   patch:
+     *     summary: Update a client's information
+     *     tags: [Clients]
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: Client ID
+     *     requestBody:
+     *       required: true
+     *       content:
+     *         application/json:
+     *           schema:
+     *             $ref: '#/components/schemas/Client'
+     *     responses:
+     *       200:
+     *         description: Client updated successfully
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/Client'
+     *       404:
+     *         description: Client not found
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/Error'
+     *       500:
+     *         description: Server error
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/Error'
+     */
     if (event.httpMethod === "PATCH" && event.path.startsWith("/clients/")) {
       const id = event.pathParameters?.id;
       if (!id) {
@@ -98,6 +237,40 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         body: JSON.stringify(updatedClient),
       };
     }
+
+    /**
+     * @swagger
+     * /client/{id}:
+     *   get:
+     *     summary: Get a client by ID
+     *     tags: [Clients]
+     *     parameters:
+     *       - in: path
+     *         name: id
+     *         required: true
+     *         schema:
+     *           type: string
+     *         description: Client ID
+     *     responses:
+     *       200:
+     *         description: Client found
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/Client'
+     *       404:
+     *         description: Client not found
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/Error'
+     *       500:
+     *         description: Server error
+     *         content:
+     *           application/json:
+     *             schema:
+     *               $ref: '#/components/schemas/Error'
+     */
     if (event.httpMethod === "GET" && event.path.startsWith("/client/")) {
       const id = event.pathParameters?.id;
       if (!id) {
@@ -122,7 +295,6 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         throw error; 
       }
     }
-
 
     return {
       statusCode: 404,

@@ -14,9 +14,11 @@ export class CreateClient {
       if (existingClient) {
         throw new ClientAlreadyExistsError();
       }
-
       return await this.clientRepository.save(client);
     } catch (error) {
+      if (error instanceof ClientAlreadyExistsError) {
+        throw error;
+      }
       throw new Error(`Failed to create client: ${error instanceof Error ? error.message : "Unknown error"}`);
     }
   }
