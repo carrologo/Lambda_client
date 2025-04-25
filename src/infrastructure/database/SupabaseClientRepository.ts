@@ -137,6 +137,11 @@ export class SupabaseClientRepository implements ClientRepository {
       delete transformedUpdates.birthdate;
     }
 
+    if(updates.lastName) {
+      transformedUpdates.last_name = updates.lastName;
+      delete transformedUpdates.lastName;
+    }
+
     const { data, error } = await this.supabase
       .from("client")
       .update(transformedUpdates)
