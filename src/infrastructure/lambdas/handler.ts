@@ -55,7 +55,15 @@ export const handler: APIGatewayProxyHandler = async (event) => {
   try {
     if (event.httpMethod === "POST" && event.path === "/clients") {
       const body = JSON.parse(event.body || "{}");
-      const { name, lastName, email, identification, birthdate, contact, comment } = body;
+      const {
+        name,
+        lastName,
+        email,
+        identification,
+        birthdate,
+        contact,
+        comment,
+      } = body;
 
       const missingFields: string[] = [];
       if (!name) missingFields.push("name");
@@ -69,6 +77,12 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       if (missingFields.length > 0) {
         return {
           statusCode: 400,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers":
+              "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+          },
           body: JSON.stringify({
             message: `Missing required field(s): ${missingFields.join(", ")}`,
           }),
@@ -82,7 +96,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         identification,
         birthdate,
         contact,
-        comment,
+        comment
       );
 
       return {
@@ -159,9 +173,7 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         findBy: event.queryStringParameters?.findBy,
         value: event.queryStringParameters?.value,
         orderBy: event.queryStringParameters?.orderBy,
-        isAsc: event.queryStringParameters?.isAsc === "false"
-          ? false
-          : true,
+        isAsc: event.queryStringParameters?.isAsc === "false" ? false : true,
         page: event.queryStringParameters?.page
           ? parseInt(event.queryStringParameters.page, 10)
           : 1,
@@ -174,6 +186,12 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
       return {
         statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers":
+            "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+        },
         body: JSON.stringify({
           data,
           pagination,
@@ -225,6 +243,12 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       if (!id) {
         return {
           statusCode: 400,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers":
+              "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+          },
           body: JSON.stringify({ message: "Client ID is required" }),
         };
       }
@@ -276,6 +300,12 @@ export const handler: APIGatewayProxyHandler = async (event) => {
       if (!id) {
         return {
           statusCode: 400,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers":
+              "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+          },
           body: JSON.stringify({ message: "Client ID is required" }),
         };
       }
@@ -283,39 +313,75 @@ export const handler: APIGatewayProxyHandler = async (event) => {
         const client = await getClientById.execute(id);
         return {
           statusCode: 200,
+          headers: {
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Headers":
+              "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+            "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+          },
           body: JSON.stringify(client),
         };
       } catch (error) {
         if (error.message === "Client not found") {
           return {
             statusCode: 404,
+            headers: {
+              "Access-Control-Allow-Origin": "*",
+              "Access-Control-Allow-Headers":
+                "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+              "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+            },
             body: JSON.stringify({ message: "Client not found" }),
           };
         }
-        throw error; 
+        throw error;
       }
     }
 
     return {
       statusCode: 404,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers":
+          "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+        "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+      },
       body: JSON.stringify({ message: "Route not found" }),
     };
   } catch (error) {
     if (error instanceof ClientAlreadyExistsError) {
       return {
         statusCode: 409,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers":
+            "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+        },
         body: JSON.stringify({ message: error.message }),
       };
     }
     if (error instanceof ClientNotFoundError) {
       return {
         statusCode: 404,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers":
+            "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+        },
         body: JSON.stringify({ message: error.message }),
       };
     }
 
     return {
       statusCode: 500,
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Headers":
+          "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+        "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+      },
       body: JSON.stringify({
         message:
           error instanceof Error ? error.message : "An unknown error occurred",
