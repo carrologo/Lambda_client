@@ -101,6 +101,12 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
       return {
         statusCode: 201,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers":
+            "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+        },
         body: JSON.stringify(client),
       };
     }
@@ -258,6 +264,13 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 
       return {
         statusCode: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Headers":
+            "Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token",
+          "Access-Control-Allow-Methods": "OPTIONS,POST,GET",
+        },
+
         body: JSON.stringify(updatedClient),
       };
     }
