@@ -10,6 +10,7 @@ export interface ClientRepository {
     clients: Client[];
     pagination: {
       page: number;
+      
       total: number;
     };
   }>;
