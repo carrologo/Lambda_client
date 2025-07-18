@@ -16,6 +16,7 @@ functions:
   LambdaClient:
     name: LambdaClient-${opt:stage, 'dev'}
     handler: src/infrastructure/lambdas/handler.handler
+    timeout: 90
     events:
       - http:
           path: /clients
