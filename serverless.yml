@@ -20,36 +20,18 @@ functions:
       - http:
           path: /clients
           method: post
-          cors:
-            origin: 'http://localhost:5173'
-            headers:
-              - Content-Type
-              - Authorization
-            allowCredentials: true
+          cors: true
       - http:
           path: /clients
           method: get
-          cors:
-            origin: 'http://localhost:5173'
-            headers:
-              - Content-Type
-              - Authorization
-            allowCredentials: true
+          cors: true
       - http:
           path: /clients/{id}
           method: patch
           cors:
-            origin: 'http://localhost:5173'
-            headers:
-              - Content-Type
-              - Authorization
-            allowCredentials: true
+            origin: true
       - http:
           path: /client/{id}
           method: get
           cors:
-            origin: 'http://localhost:5173'
-            headers:
-              - Content-Type
-              - Authorization
-            allowCredentials: true
+            origin: true
