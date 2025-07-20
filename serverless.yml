@@ -15,23 +15,37 @@ plugins:
 functions:
   LambdaClient:
     name: LambdaClient-${opt:stage, 'dev'}
-    handler: src/infrastructure/lambdas/handler.handler
+    handler: src/infrastructure/lambdas/handler.createClientHandler
     events:
       - http:
           path: /clients
           method: post
           cors: true
+
+  LambdaGetClients:
+    name: LambdaGetClients-${opt:stage, 'dev'}
+    handler: src/infrastructure/lambdas/handler.getAllClientsHandler
+    events:
       - http:
           path: /clients
           method: get
           cors: true
+
+  LambdaUpdateClient:
+    name: LambdaUpdateClient-${opt:stage, 'dev'}
+    handler: src/infrastructure/lambdas/handler.updateClientHandler
+    events:
       - http:
           path: /clients/{id}
           method: patch
-          cors:
-            origin: true
+          cors: true
+
+  LambdaGetClientById:
+    name: LambdaGetClientById-${opt:stage, 'dev'}
+    handler: src/infrastructure/lambdas/handler.getClientByIdHandler
+    events:
       - http:
-          path: /client/{id}
+          path: /clients/{id}
           method: get
-          cors:
-            origin: true
+          cors: true
+            
