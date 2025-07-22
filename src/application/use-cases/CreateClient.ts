@@ -12,7 +12,7 @@ export class CreateClient {
       const existingClient = await this.clientRepository.findByIdentification(identification);
 
       if (existingClient) {
-        throw new ClientAlreadyExistsError();
+        throw new ClientAlreadyExistsError(identification);
       }
       return await this.clientRepository.save(client);
     } catch (error) {

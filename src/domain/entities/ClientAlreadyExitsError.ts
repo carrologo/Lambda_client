@@ -1,6 +1,6 @@
 export class ClientAlreadyExistsError extends Error {
-    constructor(message: string = "Client with this identification already exists.") {
-      super(message);
+    constructor(identification: string) {
+      super(`El cliente con la identificación ${identification} ya existe.`);
       this.name = "ClientAlreadyExistsError";
     }
   }
