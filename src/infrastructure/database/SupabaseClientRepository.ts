@@ -66,6 +66,34 @@ export class SupabaseClientRepository implements ClientRepository {
       : null;
   }
 
+  async findByEmail(email: string): Promise<Client | null> {
+    const { data, error } = await this.supabase
+      .from("client")
+      .select("*")
+      .eq("email", email)
+      .single();
+
+    if (error) {
+      if (error.code === "PGRST116") {
+        return null;
+      }
+      console.error("Error fetching client:", error);
+      throw new Error(error.message);
+    }
+
+    return data
+      ? new Client(
+          data.name,
+          data.last_name,
+          data.email,
+          data.identification,
+          data.birthdate,
+          data.contact,
+          data.comment
+        )
+      : null;
+  }
+
   async findAll(queryParams: {
     findBy?: string;
     value?: any;
